@@ -40,13 +40,14 @@ function toCategory(terms?: Term[][]): Category | undefined {
 }
 
 function toEntry(raw: WpEntry, kind: Entry["kind"]): Entry {
+  const title = text(raw.title.rendered);
   return {
     kind,
     href: `/${raw.slug}/`,
-    title: text(raw.title.rendered),
+    title,
     excerpt: text(raw.excerpt.rendered),
     date: raw.date,
-    html: clean(raw.content.rendered),
+    html: clean(raw.content.rendered, title),
     image: toImage(raw._embedded?.["wp:featuredmedia"]?.[0]),
     category: toCategory(raw._embedded?.["wp:term"]),
   };

@@ -77,3 +77,69 @@ test("isSlug", () => {
     assert.ok(!isSlug(bad), bad);
   }
 });
+
+test("Divi link module with # is dropped entirely", () => {
+  const out = clean(
+    "<p>Antes</p>[et_pb_text _builder_version=»4.19.5&#8243; link_option_url=»#» global_colors_info=»{}»]<p>Paga Administración</p>[/et_pb_text]<p>Después</p>",
+  );
+  assert.ok(!out.includes("Paga"));
+  assert.match(out, /Antes/);
+  assert.match(out, /Después/);
+});
+
+test("a # link on a layout module keeps its content", () => {
+  const out = clean(
+    "[et_pb_section link_option_url=»#» _builder_version=»4.19.5&#8243;][et_pb_row][et_pb_column type=»4_4&#8243;][et_pb_text]<p>Contenido de la sección</p>[/et_pb_text][/et_pb_column][/et_pb_row][/et_pb_section]",
+  );
+  assert.equal(out, "<p>Contenido de la sección</p>");
+});
+
+test("Divi link module with empty url is dropped", () => {
+  assert.ok(!clean("[et_pb_text link_option_url=»» x=»1&#8243;]<p>Hola</p>[/et_pb_text]").includes("Hola"));
+});
+
+test("Divi link module with a real url becomes a link", () => {
+  const out = clean(
+    "[et_pb_text link_option_url=»https://pagos.test/x?a=1&#038;b=2» _builder_version=»4.19.5&#8243;]<p>Paga Administración</p>[/et_pb_text]",
+  );
+  assert.equal(out, '<p><a href="https://pagos.test/x?a=1&amp;b=2">Paga Administración</a></p>');
+});
+
+test("video only when the path is a video file", () => {
+  assert.equal(
+    clean("[et_pb_video src_webm=»https://drive.google.com/file/d/1vT/view?usp=sharing» _builder_version=»4.19.5&#8243;][/et_pb_video]"),
+    "",
+  );
+  assert.match(clean("[et_pb_video src=»https://x.test/a.MP4?v=1» _b=»1&#8243;]"), /<video src="https:\/\/x.test\/a.MP4\?v=1"/);
+});
+
+test("gallery links to attachment pages are unwrapped, file links kept", () => {
+  const out = clean(
+    "<dt><a href='https://a.test/post/foto-1/'><img src=\"https://a.test/wp-content/uploads/a-150x150.jpg\" alt=\"\"></a></dt>" +
+      "<a href='https://a.test/wp-content/uploads/a.jpg'><img src=\"https://a.test/wp-content/uploads/a-150x150.jpg\" alt=\"\"></a>",
+  );
+  assert.ok(!out.includes("foto-1"));
+  assert.match(out, /<a href="https:\/\/a.test\/wp-content\/uploads\/a.jpg"><img/);
+});
+
+test("first heading equal to the title is dropped, including nested text", () => {
+  assert.equal(clean("<h1><strong>Dignatarios</strong></h1><p>Hola</p>", "Dignatarios"), "<p>Hola</p>");
+  assert.equal(clean("<h2>  ÁRBOLES  y   Salud</h2><p>x</p>", "arboles y salud"), "<p>x</p>");
+});
+
+test("only the first heading is considered for the title", () => {
+  const out = clean("<h2>Otro</h2><h2>Dignatarios</h2>", "Dignatarios");
+  assert.match(out, /Dignatarios/);
+});
+
+test("Google Maps iframe is kept with lazy loading, others dropped", () => {
+  const out = clean(
+    '<iframe loading="eager" src="https://maps.google.com/maps?q=3.275687%2C%20-76.516424&#038;t=m&#038;z=14&#038;output=embed&#038;iwloc=near" title="3.275687, -76.516424" aria-label="x" onload="x()"></iframe>',
+  );
+  assert.match(out, /<iframe /);
+  assert.match(out, /src="https:\/\/maps.google.com\/maps\?q=/);
+  assert.match(out, /loading="lazy"/);
+  assert.ok(!out.includes("aria-label") && !out.includes("onload"));
+  assert.ok(!clean('<iframe src="https://www.google.com/other"></iframe>').includes("<iframe"));
+  assert.ok(!clean('<iframe src="https://maps.google.com.evil.com/maps"></iframe>').includes("<iframe"));
+});
