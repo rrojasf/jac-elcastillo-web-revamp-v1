@@ -1,0 +1,28 @@
+import type { ComponentPropsWithoutRef } from "react";
+
+type Level = 1 | 2 | 3 | 4;
+type Size = "xl" | "lg" | "md" | "sm";
+
+const sizes: Record<Size, string> = {
+  xl: "text-4xl font-bold",
+  lg: "text-3xl font-bold",
+  md: "text-2xl font-semibold",
+  sm: "text-xl font-semibold",
+};
+
+const defaultSize: Record<Level, Size> = { 1: "xl", 2: "lg", 3: "md", 4: "sm" };
+
+type HeadingProps = ComponentPropsWithoutRef<"h1"> & {
+  level: Level;
+  size?: Size;
+};
+
+export function Heading({
+  level,
+  size = defaultSize[level],
+  className = "",
+  ...props
+}: HeadingProps) {
+  const Tag = `h${level}` as const;
+  return <Tag className={`${sizes[size]} ${className}`.trim()} {...props} />;
+}
