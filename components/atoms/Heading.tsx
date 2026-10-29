@@ -4,7 +4,7 @@ type Level = 1 | 2 | 3 | 4;
 type Size = "xl" | "lg" | "md" | "sm";
 
 const sizes: Record<Size, string> = {
-  xl: "text-4xl font-bold",
+  xl: "text-4xl md:text-5xl font-extrabold",
   lg: "text-3xl font-bold",
   md: "text-2xl font-semibold",
   sm: "text-xl font-semibold",
@@ -24,5 +24,5 @@ export function Heading({
   ...props
 }: HeadingProps) {
   const Tag = `h${level}` as const;
-  return <Tag className={`${sizes[size]} ${className}`.trim()} {...props} />;
+  return <Tag className={`font-display text-balance tracking-tight ${sizes[size]} ${className}`.trim()} {...props} />;
 }

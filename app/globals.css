@@ -1,7 +1,54 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-body {
-  background: #ffffff;
-  color: #171717;
+@theme {
+  --color-ink: #1d1636;
+  --color-brand: #3b2a88;
+  --color-brand-deep: #24175a;
+  --color-leaf: #8cb31f;
+  --color-leaf-deep: #4a6a0a;
+  --color-sky: #1a9ad9;
+  --color-sun: #f6d31a;
+  --color-flag-blue: #1f3d9e;
+  --color-flag-red: #d3262e;
+  --color-paper: #fbfaf4;
+  --color-line: #e3dfcf;
+  --color-muted: #5a546a;
+  --animate-rise: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+}
+
+@theme inline {
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-atkinson), ui-sans-serif, system-ui, sans-serif;
+}
+
+@utility flag-rule {
+  height: 0.5rem;
+  background: linear-gradient(
+    var(--color-sun) 0 50%,
+    var(--color-flag-blue) 50% 75%,
+    var(--color-flag-red) 75%
+  );
+}
+
+@utility anchor-source {
+  anchor-name: var(--anchor);
+}
+
+@utility anchor-panel {
+  position-anchor: var(--anchor);
+  position-area: bottom span-right;
+  inset: auto;
+  margin: 0.5rem 0 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
 }

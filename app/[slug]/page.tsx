@@ -27,6 +27,7 @@ export default async function Page({ params }: Props) {
   return (
     <ContentTemplate
       title={entry.title}
+      eyebrow={entry.kind === "post" ? "Noticias" : undefined}
       date={entry.kind === "post" ? entry.date : undefined}
       html={entry.html}
     />

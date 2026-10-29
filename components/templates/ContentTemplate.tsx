@@ -1,12 +1,13 @@
 import type { ReactNode } from "react";
 import { Container } from "@/components/atoms/Container";
 import { DateText } from "@/components/atoms/DateText";
-import { Heading } from "@/components/atoms/Heading";
 import { Prose } from "@/components/atoms/Prose";
+import { Hero } from "@/components/organisms/Hero";
 import type { SafeHtml } from "@/lib/types";
 
 type ContentTemplateProps = {
   title: string;
+  eyebrow?: string;
   date?: string;
   html?: SafeHtml;
   children?: ReactNode;
@@ -14,16 +15,20 @@ type ContentTemplateProps = {
 
 export function ContentTemplate({
   title,
+  eyebrow,
   date,
   html,
   children,
 }: ContentTemplateProps) {
   return (
-    <Container className="py-8">
-      <Heading level={1}>{title}</Heading>
-      {date && <DateText iso={date} className="mt-2 block text-sm text-neutral-600" />}
-      {html && <Prose html={html} className="mt-6" />}
-      {children}
-    </Container>
+    <>
+      <Hero size="sm" title={title} eyebrow={eyebrow}>
+        {date && <DateText iso={date} />}
+      </Hero>
+      <Container className="py-10 md:py-14">
+        {html && <Prose html={html} />}
+        {children}
+      </Container>
+    </>
   );
 }
