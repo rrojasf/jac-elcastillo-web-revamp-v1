@@ -15,9 +15,6 @@ export function SiteFooter() {
         <div className="grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <Logo tone="light" />
-            <p className="mt-6 font-display text-2xl font-semibold text-sun">
-              “{SITE.tagline}”
-            </p>
           </div>
           <div>
             <h2 className={headingClass}>Navegación</h2>

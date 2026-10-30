@@ -3,11 +3,12 @@ import type { ContactLink, NavEntry, NavItem } from "@/lib/types";
 export const SITE = {
   name: "JAC El Castillo",
   fullName: "Junta de Acción Comunal Ciudad Campestre El Castillo",
+  org: "Junta de Acción Comunal",
   place: "Ciudad Campestre",
+  locality: "El Castillo",
   tagline: "Comunidad construyendo Comunidad",
   description:
     "La Junta de Acción Comunal de la Ciudad Campestre El Castillo, en Jamundí, trabaja por la seguridad, los servicios públicos y la vida en comunidad.",
-  logo: "https://jacelcastillo.com.co/wp-content/uploads/2024/05/cropped-favicon.png",
   contact: {
     phone: "+57 315 7531859",
     whatsapp: "573157531859",

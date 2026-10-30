@@ -5,7 +5,7 @@ import { Container } from "@/components/atoms/Container";
 import { Icon } from "@/components/atoms/Icon";
 import { Logo } from "@/components/atoms/Logo";
 import { NavLink } from "@/components/molecules/NavLink";
-import { NAV, SITE } from "@/lib/site";
+import { NAV } from "@/lib/site";
 
 const topLinkClass =
   "rounded-full px-4 py-2 text-lg font-semibold hover:bg-white aria-[current=page]:text-brand";
@@ -18,8 +18,8 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-paper/90 backdrop-blur">
       <div className="flag-rule" />
-      <Container size="wide" className="flex items-center justify-between py-3">
-        <Link href="/" aria-label={`${SITE.name} inicio`}>
+      <Container size="wide" className="flex items-center justify-between py-2">
+        <Link href="/">
           <Logo tone="dark" />
         </Link>
 
