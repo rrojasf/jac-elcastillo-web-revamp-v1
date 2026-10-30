@@ -1,9 +1,10 @@
 import type { ComponentPropsWithoutRef } from "react";
 
 type Level = 1 | 2 | 3 | 4;
-type Size = "xl" | "lg" | "md" | "sm";
+type Size = "2xl" | "xl" | "lg" | "md" | "sm";
 
 const sizes: Record<Size, string> = {
+  "2xl": "text-5xl md:text-7xl font-extrabold",
   xl: "text-4xl md:text-5xl font-extrabold",
   lg: "text-3xl font-bold",
   md: "text-2xl font-semibold",

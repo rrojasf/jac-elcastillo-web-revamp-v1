@@ -233,3 +233,11 @@ export function text(html: string): string {
 }
 
 export const isSlug = (s: string): boolean => /^[a-z0-9-]{1,200}$/.test(s);
+
+export function truncate(text: string, max = 180): string {
+  if (text.length <= max) return text;
+  const head = text.slice(0, max + 1);
+  const space = head.lastIndexOf(" ");
+  const cut = space > 0 ? head.slice(0, space) : text.slice(0, max);
+  return cut.replace(/[\s.,;:!?¡¿-]+$/, "") + "…";
+}

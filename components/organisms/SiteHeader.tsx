@@ -23,7 +23,7 @@ export function SiteHeader() {
           <Logo tone="dark" />
         </Link>
 
-        <nav aria-label="Principal" className="hidden items-center gap-2 md:flex">
+        <nav aria-label="Principal" className="hidden items-center gap-2 lg:flex">
           {NAV.map((entry, index) => {
             if ("href" in entry) {
               return (
@@ -62,7 +62,7 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <div className="md:hidden">
+        <div className="lg:hidden">
           <Button variant="secondary" popoverTarget="site-menu">
             <Icon name="menu" />
             Menú

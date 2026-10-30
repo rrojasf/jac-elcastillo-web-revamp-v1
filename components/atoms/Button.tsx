@@ -1,11 +1,16 @@
 import type { ComponentPropsWithoutRef } from "react";
 
-type Variant = "primary" | "secondary";
+export type Variant = "primary" | "secondary";
 
 const variants: Record<Variant, string> = {
   primary: "bg-brand text-white hover:bg-brand-deep",
   secondary: "border border-ink/15 bg-white text-ink hover:border-ink/40",
 };
+
+const base =
+  "inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors";
+
+export const buttonClass = (variant: Variant) => `${base} ${variants[variant]}`;
 
 type ButtonProps = ComponentPropsWithoutRef<"button"> & { variant?: Variant };
 
@@ -18,7 +23,7 @@ export function Button({
   return (
     <button
       type={type}
-      className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${variants[variant]} ${className}`.trim()}
+      className={`${buttonClass(variant)} ${className}`.trim()}
       {...props}
     />
   );

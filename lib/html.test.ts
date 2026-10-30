@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { clean, isSlug, text } from "./html.ts";
+import { clean, isSlug, text, truncate } from "./html.ts";
 
 test("Divi wrapper is stripped and inner text kept", () => {
   const out = clean('[et_pb_section fb_built=»1&#8243;][et_pb_text]<p>Hola mundo</p>[/et_pb_text][/et_pb_section]');
@@ -142,4 +142,19 @@ test("Google Maps iframe is kept with lazy loading, others dropped", () => {
   assert.ok(!out.includes("aria-label") && !out.includes("onload"));
   assert.ok(!clean('<iframe src="https://www.google.com/other"></iframe>').includes("<iframe"));
   assert.ok(!clean('<iframe src="https://maps.google.com.evil.com/maps"></iframe>').includes("<iframe"));
+});
+
+test("truncate keeps short text unchanged", () => {
+  assert.equal(truncate("Hola mundo", 20), "Hola mundo");
+  assert.equal(truncate("a".repeat(180)), "a".repeat(180));
+});
+
+test("truncate cuts at the last space and drops trailing punctuation", () => {
+  assert.equal(truncate("uno dos tres cuatro", 14), "uno dos tres…");
+  assert.equal(truncate("uno dos, tres cuatro", 9), "uno dos…");
+  assert.equal(truncate("uno dos tres cuatro", 13), "uno dos tres…");
+});
+
+test("truncate cuts a single long word at max", () => {
+  assert.equal(truncate("abcdefghij", 5), "abcde…");
 });

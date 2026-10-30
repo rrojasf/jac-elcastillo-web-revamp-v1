@@ -1,5 +1,5 @@
-import { clean, text } from "../html.ts";
-import type { Category, Entry, Img, Summary } from "../types.ts";
+import { clean, text, truncate } from "../html.ts";
+import type { Category, Entry, Img, SafeHtml, Summary } from "../types.ts";
 import { cache } from "react";
 import { wp } from "./client.ts";
 
@@ -44,20 +44,31 @@ function toCategory(terms?: Term[][]): Category | undefined {
   return term && { slug: term.slug, name: term.name };
 }
 
-function toSummary(raw: Omit<WpEntry, "content">): Summary {
+function toSummary(raw: Omit<WpEntry, "content">, excerpt: string): Summary {
   return {
     href: `/${raw.slug}/`,
     title: text(raw.title.rendered),
-    excerpt: text(raw.excerpt.rendered).replace(/\s*\[…\]$/, "…"),
-    date: raw.date,
+    excerpt,
     image: toImage(raw._embedded?.["wp:featuredmedia"]?.[0]),
+  };
+}
+
+function toPostSummary(raw: Omit<WpEntry, "content">): Summary {
+  return {
+    ...toSummary(raw, text(raw.excerpt.rendered).replace(/\s*\[…\]$/, "…")),
+    date: raw.date,
     category: toCategory(raw._embedded?.["wp:term"]),
   };
 }
 
+// WordPress page excerpts keep dead theme buttons and headings; paragraphs of the cleaned HTML do not.
+const pageExcerpt = (html: SafeHtml) =>
+  truncate(text(html.match(/<p>[\s\S]*?<\/p>/g)?.join(" ") ?? html));
+
 function toEntry(raw: WpEntry, kind: Entry["kind"]): Entry {
-  const summary = toSummary(raw);
-  return { ...summary, kind, html: clean(raw.content.rendered, summary.title) };
+  const html = clean(raw.content.rendered, text(raw.title.rendered));
+  const summary = kind === "post" ? toPostSummary(raw) : toSummary(raw, pageExcerpt(html));
+  return { ...summary, kind, html };
 }
 
 export async function getEntry(slug: string): Promise<Entry | null> {
@@ -72,25 +83,18 @@ export async function getEntry(slug: string): Promise<Entry | null> {
   return page ? toEntry(page, "page") : null;
 }
 
-async function allSlugs(path: "posts" | "pages"): Promise<string[]> {
-  const slugs: string[] = [];
-  let totalPages = 1;
-  for (let page = 1; page <= totalPages; page++) {
-    const res = await wp<{ slug: string }[]>(path, {
-      per_page: 100,
-      page,
-      _fields: "slug",
-    });
-    if (!res) break;
-    totalPages = res.totalPages;
-    slugs.push(...res.data.map((e) => e.slug));
-  }
-  return slugs;
-}
-
-export async function getAllSlugs(): Promise<string[]> {
-  const [posts, pages] = await Promise.all([allSlugs("posts"), allSlugs("pages")]);
-  return [...posts, ...pages];
+export async function getPagesBySlugs(slugs: string[]): Promise<Summary[]> {
+  const res = await wp<WpEntry[]>("pages", {
+    slug: slugs.join(","),
+    per_page: 100,
+    _fields: FIELDS,
+    _embed: EMBED,
+  });
+  const bySlug = new Map((res?.data ?? []).map((raw) => [raw.slug, raw]));
+  return slugs.flatMap((slug) => {
+    const raw = bySlug.get(slug);
+    return raw ? [toEntry(raw, "page")] : [];
+  });
 }
 
 type WpCategory = { id: number; slug: string; name: string; count: number };
@@ -112,12 +116,14 @@ export async function getCategories(): Promise<Category[]> {
 export async function getPosts({
   page,
   categoria,
+  perPage = PER_PAGE,
 }: {
   page: number;
   categoria?: string;
+  perPage?: number;
 }): Promise<{ items: Summary[]; totalPages: number } | null> {
   const params: Record<string, string | number> = {
-    per_page: PER_PAGE,
+    per_page: perPage,
     page,
     _fields: "slug,date,title,excerpt,_links,_embedded",
     _embed: "wp:featuredmedia,wp:term",
@@ -128,5 +134,10 @@ export async function getPosts({
     params.categories = match.id;
   }
   const res = await wp<Omit<WpEntry, "content">[]>("posts", params);
-  return res && { items: res.data.map(toSummary), totalPages: res.totalPages };
+  return res && { items: res.data.map(toPostSummary), totalPages: res.totalPages };
+}
+
+export async function getLatest(count: number): Promise<Summary[]> {
+  const posts = await getPosts({ page: 1, perPage: count });
+  return posts?.items ?? [];
 }

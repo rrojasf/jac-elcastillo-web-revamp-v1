@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { Container } from "@/components/atoms/Container";
 import { Logo } from "@/components/atoms/Logo";
-import { NAV_LINKS, SITE } from "@/lib/site";
+import { ContactList } from "@/components/organisms/ContactList";
+import { CONTACT_LINKS, NAV_LINKS, SITE } from "@/lib/site";
 
 const headingClass =
   "text-sm font-semibold uppercase tracking-[0.14em] text-white/70";
 
 export function SiteFooter() {
-  const { phone, whatsapp, email } = SITE.contact;
   return (
     <footer className="bg-brand-deep text-white">
       <div className="flag-rule" />
@@ -33,28 +33,7 @@ export function SiteFooter() {
           </div>
           <div>
             <h2 className={headingClass}>Contacto</h2>
-            <ul className="mt-4 space-y-2 text-lg">
-              <li>
-                <a href={`tel:+${phone.replace(/\D/g, "")}`} className="hover:underline">
-                  {phone}
-                </a>
-              </li>
-              <li>
-                <a
-                  href={`https://wa.me/${whatsapp}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:underline"
-                >
-                  WhatsApp
-                </a>
-              </li>
-              <li>
-                <a href={`mailto:${email}`} className="hover:underline">
-                  {email}
-                </a>
-              </li>
-            </ul>
+            <ContactList links={CONTACT_LINKS} tone="light" />
           </div>
         </div>
         <div className="border-t border-white/15 py-6 text-sm text-white/70">

@@ -8,6 +8,7 @@ import type { SafeHtml } from "@/lib/types";
 type ContentTemplateProps = {
   title: string;
   eyebrow?: string;
+  intro?: string;
   date?: string;
   html?: SafeHtml;
   children?: ReactNode;
@@ -16,6 +17,7 @@ type ContentTemplateProps = {
 export function ContentTemplate({
   title,
   eyebrow,
+  intro,
   date,
   html,
   children,
@@ -23,6 +25,7 @@ export function ContentTemplate({
   return (
     <>
       <Hero size="sm" title={title} eyebrow={eyebrow}>
+        {intro}
         {date && <DateText iso={date} />}
       </Hero>
       <Container className="py-10 md:py-14">

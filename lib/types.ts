@@ -13,3 +13,10 @@ export type Entry = Summary & { kind: "post" | "page"; html: SafeHtml };
 export type NavItem = { label: string; href: string };
 export type NavGroup = { label: string; items: NavItem[] };
 export type NavEntry = NavItem | NavGroup;
+export type ContactLink = {
+  icon: "mail" | "phone" | "whatsapp" | "clock";
+  label: string;
+  value: string;
+  href?: string;
+  external?: boolean;
+};

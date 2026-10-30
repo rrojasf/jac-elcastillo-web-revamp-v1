@@ -3,10 +3,13 @@ import { Container } from "@/components/atoms/Container";
 import { Heading } from "@/components/atoms/Heading";
 import { Tiles } from "@/components/atoms/Tiles";
 
-type Size = "sm";
+type Size = "sm" | "lg";
+
+const headings: Record<Size, "xl" | "2xl"> = { sm: "xl", lg: "2xl" };
 
 const sizes: Record<Size, string> = {
   sm: "py-10 md:py-14",
+  lg: "py-16 md:py-24",
 };
 
 type HeroProps = {
@@ -25,7 +28,7 @@ export function Hero({ title, eyebrow, size = "sm", children }: HeroProps) {
             {eyebrow}
           </p>
         )}
-        <Heading level={1} className="mt-2 max-w-3xl motion-safe:animate-rise">
+        <Heading level={1} size={headings[size]} className="mt-2 max-w-3xl motion-safe:animate-rise">
           {title}
         </Heading>
         {children && <div className="mt-3 text-lg text-muted">{children}</div>}

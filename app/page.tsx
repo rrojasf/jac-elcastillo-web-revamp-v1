@@ -1,23 +1,17 @@
-import Link from "next/link";
-import { ContentTemplate } from "@/components/templates/ContentTemplate";
-import { getAllSlugs } from "@/lib/cms/content";
+import type { Metadata } from "next";
+import { HomeTemplate } from "@/components/templates/HomeTemplate";
+import { getLatest, getPagesBySlugs } from "@/lib/cms/content";
+import { SITE } from "@/lib/site";
 
 // Rendered per request so the build never calls WordPress.
 export const dynamic = "force-dynamic";
 
+export const metadata: Metadata = { description: SITE.description };
+
 export default async function Home() {
-  const slugs = await getAllSlugs();
-  return (
-    <ContentTemplate title="Índice temporal">
-      <ul className="mt-6 list-disc pl-6">
-        {slugs.map((slug) => (
-          <li key={slug}>
-            <Link href={`/${slug}/`} className="underline">
-              {slug}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </ContentTemplate>
-  );
+  const [latest, [about]] = await Promise.all([
+    getLatest(3),
+    getPagesBySlugs(["nosotros"]),
+  ]);
+  return <HomeTemplate latest={latest} about={about} />;
 }
