@@ -22,7 +22,7 @@ export function Logo({ tone = "dark", className = "" }: LogoProps) {
         className="size-13 shrink-0 sm:size-16 lg:size-[71px]"
       />
       <span
-        className={`flex flex-col gap-0.5 whitespace-nowrap leading-none ${tones[tone].text}`}
+        className={`flex flex-col gap-0.5 whitespace-nowrap text-center leading-none ${tones[tone].text}`}
       >
         <span className="text-xs/none font-medium [font-variant-caps:small-caps] lg:text-sm/none">
           {SITE.org}
@@ -31,7 +31,7 @@ export function Logo({ tone = "dark", className = "" }: LogoProps) {
         <span className="font-display text-xs/none font-bold uppercase lg:text-sm/none">
           {SITE.place}
         </span>
-        <span className="font-display text-xs/none font-extrabold uppercase tracking-[0.3em] lg:text-sm/none lg:tracking-[0.4em]">
+        <span className="font-display text-xs/none font-extrabold uppercase tracking-[0.3em] pl-[0.3em] lg:text-sm/none lg:tracking-[0.4em] lg:pl-[0.4em]">
           {SITE.locality}
         </span>
         <span className="flex flex-col">
