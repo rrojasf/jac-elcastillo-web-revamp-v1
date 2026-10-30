@@ -1,7 +1,23 @@
 import type { NextConfig } from "next";
 
+const csp = [
+  "default-src 'self'",
+  `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""}`,
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: https://jacelcastillo.com.co",
+  "media-src 'self' https://jacelcastillo.com.co",
+  "frame-src https://maps.google.com https://www.google.com",
+  "font-src 'self'",
+  "connect-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+].join("; ");
+
 const nextConfig: NextConfig = {
   trailingSlash: true,
+  poweredByHeader: false,
   experimental: { cpus: 2, staticGenerationMaxConcurrency: 2 },
   images: {
     remotePatterns: [
@@ -11,6 +27,18 @@ const nextConfig: NextConfig = {
         pathname: "/wp-content/uploads/**",
       },
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "Content-Security-Policy", value: csp },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+        ],
+      },
+    ];
   },
 };
 
