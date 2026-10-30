@@ -2,6 +2,9 @@ import Link from "next/link";
 import { ContentTemplate } from "@/components/templates/ContentTemplate";
 import { getAllSlugs } from "@/lib/cms/content";
 
+// Rendered per request so the build never calls WordPress.
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const slugs = await getAllSlugs();
   return (

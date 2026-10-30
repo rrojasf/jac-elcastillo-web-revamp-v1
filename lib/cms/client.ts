@@ -8,7 +8,7 @@ export async function wp<T>(
     url.searchParams.set(key, String(value));
   }
   const res = await fetch(url, {
-    signal: AbortSignal.timeout(8000),
+    signal: AbortSignal.timeout(15000),
     next: { revalidate: 300, tags: ["wordpress"] },
   });
   if (res.status === 404) return null;
