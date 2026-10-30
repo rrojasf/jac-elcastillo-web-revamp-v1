@@ -205,7 +205,7 @@ export function clean(html: string, title?: string): SafeHtml {
     exclusiveFilter: (frame) =>
       frame.tag === "iframe"
         ? !isMapsEmbed(frame.attribs.src)
-        : frame.tag === "p" &&
+        : (frame.tag === "p" || frame.tag === "a") &&
           !frame.mediaChildren.length &&
           !frame.text.replace(/&nbsp;|\u00a0/g, "").trim(),
   });

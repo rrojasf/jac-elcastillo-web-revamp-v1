@@ -60,6 +60,15 @@ test("empty and nbsp paragraphs are removed", () => {
   assert.equal(clean("<p></p><p>&nbsp;</p><p> </p><p>Hola</p>"), "<p>Hola</p>");
 });
 
+test("empty links are removed, links with text or an image are kept", () => {
+  assert.equal(clean('<p>Hola</p><a href="https://a.test/a.pdf"></a><a href="https://a.test/b.pdf">&nbsp;</a>'), "<p>Hola</p>");
+  assert.match(
+    clean('<a href="https://a.test/wp-content/uploads/a.jpg"><img src="https://a.test/wp-content/uploads/a-150x150.jpg" alt=""></a>'),
+    /<a href="https:\/\/a.test\/wp-content\/uploads\/a.jpg"><img/,
+  );
+  assert.equal(clean('<a href="https://a.test/a.pdf">Descargar</a>'), '<a href="https://a.test/a.pdf">Descargar</a>');
+});
+
 test("paragraph with only an image is kept", () => {
   assert.match(clean('<p><img src="https://a.test/a.png"></p>'), /<p><img/);
 });
