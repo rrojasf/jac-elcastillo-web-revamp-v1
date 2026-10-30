@@ -20,6 +20,15 @@ test("a WordPress upload image is rewritten and keeps its attributes", () => {
   assert.ok(out.startsWith("<p><img ") && out.endsWith(" /></p>"));
 });
 
+test("only images after the first load lazily", () => {
+  const out = optimizeImages(safe(`<img src="${SRC}" alt="" /><img src="${SRC}" alt="" /><img src="${SRC}" alt="" />`));
+  const tags = out.match(/<img\b[^>]*>/g) ?? [];
+  assert.deepEqual(
+    tags.map((t) => t.includes('loading="lazy" decoding="async"')),
+    [false, true, true],
+  );
+});
+
 test("an image on another host is untouched", () => {
   const html = safe('<img src="https://other.test/wp-content/uploads/a.png" alt="x" />');
   assert.equal(optimizeImages(html), html);
