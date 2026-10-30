@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/components/atoms/Link";
 import { Heading } from "@/components/atoms/Heading";
 
 type SectionHeaderProps = { title: string; href?: string; linkLabel?: string };

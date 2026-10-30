@@ -21,6 +21,30 @@
       transform: translateY(12px);
     }
   }
+  --animate-turn: turn 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  @keyframes turn {
+    0%, 15% {
+      rotate: 0deg;
+    }
+    25%, 40% {
+      rotate: 90deg;
+    }
+    50%, 65% {
+      rotate: 180deg;
+    }
+    75%, 90% {
+      rotate: 270deg;
+    }
+    100% {
+      rotate: 360deg;
+    }
+  }
+  --animate-appear: appear 0.2s 0.2s both;
+  @keyframes appear {
+    from {
+      opacity: 0;
+    }
+  }
 }
 
 @theme inline {

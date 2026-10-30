@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/components/atoms/Link";
 import { Container } from "@/components/atoms/Container";
 import { Logo } from "@/components/atoms/Logo";
 import { ContactList } from "@/components/organisms/ContactList";

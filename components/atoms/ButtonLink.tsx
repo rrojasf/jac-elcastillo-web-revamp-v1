@@ -1,5 +1,5 @@
-import Link from "next/link";
 import type { ComponentProps } from "react";
+import { Link } from "@/components/atoms/Link";
 import { buttonClass, type Variant } from "@/components/atoms/Button";
 
 type ButtonLinkProps = ComponentProps<typeof Link> & { variant?: Variant };

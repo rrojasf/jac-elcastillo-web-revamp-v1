@@ -1,5 +1,5 @@
-import Link from "next/link";
 import type { CSSProperties } from "react";
+import { Link } from "@/components/atoms/Link";
 import { Button } from "@/components/atoms/Button";
 import { Container } from "@/components/atoms/Container";
 import { Icon } from "@/components/atoms/Icon";

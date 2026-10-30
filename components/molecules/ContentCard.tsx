@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/components/atoms/Link";
 import { DateText } from "@/components/atoms/DateText";
 import { Heading } from "@/components/atoms/Heading";
 import { Tag } from "@/components/atoms/Tag";
