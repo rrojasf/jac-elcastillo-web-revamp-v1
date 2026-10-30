@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Atkinson_Hyperlegible_Next, Bricolage_Grotesque } from "next/font/google";
 import { SiteFooter } from "@/components/organisms/SiteFooter";
 import { SiteHeader } from "@/components/organisms/SiteHeader";
-import { SITE } from "@/lib/site";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -18,7 +17,6 @@ const atkinson = Atkinson_Hyperlegible_Next({
 export const metadata: Metadata = {
   title: { default: "JAC El Castillo", template: "%s | JAC El Castillo" },
   robots: { index: false, follow: false },
-  icons: { icon: SITE.logo },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
