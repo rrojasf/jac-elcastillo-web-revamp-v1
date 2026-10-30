@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ContentTemplate } from "@/components/templates/ContentTemplate";
-import { getAllSlugs, getEntry } from "@/lib/cms/content";
+import { getEntry } from "@/lib/cms/content";
 import { isSlug } from "@/lib/html";
 
 type Props = { params: Promise<{ slug: string }> };
 
+// Pages render on first visit (ISR) so a slow WordPress cannot fail the deploy.
 export async function generateStaticParams() {
-  return (await getAllSlugs()).map((slug) => ({ slug }));
+  return [];
 }
 
 export async function generateMetadata({
