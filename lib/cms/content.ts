@@ -1,4 +1,5 @@
 import { clean, text, truncate } from "../html.ts";
+import { optimizeImages } from "../images.ts";
 import type { Category, Entry, Img, SafeHtml, Summary } from "../types.ts";
 import { cache } from "react";
 import { wp } from "./client.ts";
@@ -66,7 +67,7 @@ const pageExcerpt = (html: SafeHtml) =>
   truncate(text(html.match(/<p>[\s\S]*?<\/p>/g)?.join(" ") ?? html));
 
 function toEntry(raw: WpEntry, kind: Entry["kind"]): Entry {
-  const html = clean(raw.content.rendered, text(raw.title.rendered));
+  const html = optimizeImages(clean(raw.content.rendered, text(raw.title.rendered)));
   const summary = kind === "post" ? toPostSummary(raw) : toSummary(raw, pageExcerpt(html));
   return { ...summary, kind, html };
 }
