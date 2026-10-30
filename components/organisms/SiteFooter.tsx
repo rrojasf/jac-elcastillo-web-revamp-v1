@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { Container } from "@/components/atoms/Container";
 import { Logo } from "@/components/atoms/Logo";
-import { NAV, SITE } from "@/lib/site";
+import { NAV_LINKS, SITE } from "@/lib/site";
 
-const items = NAV.flatMap((group) => group.items);
 const headingClass =
   "text-sm font-semibold uppercase tracking-[0.14em] text-white/70";
 
@@ -23,7 +22,7 @@ export function SiteFooter() {
           <div>
             <h2 className={headingClass}>Navegación</h2>
             <ul className="mt-4 space-y-2 text-lg">
-              {items.map((item) => (
+              {NAV_LINKS.map((item) => (
                 <li key={item.href}>
                   <Link href={item.href} className="hover:underline">
                     {item.label}

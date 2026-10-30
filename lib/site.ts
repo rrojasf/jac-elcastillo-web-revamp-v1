@@ -1,4 +1,4 @@
-import type { NavGroup } from "@/lib/types";
+import type { NavEntry, NavItem } from "@/lib/types";
 
 export const SITE = {
   name: "JAC El Castillo",
@@ -13,7 +13,7 @@ export const SITE = {
   },
 } as const;
 
-export const NAV: NavGroup[] = [
+export const NAV: NavEntry[] = [
   {
     label: "La Junta",
     items: [
@@ -21,6 +21,7 @@ export const NAV: NavGroup[] = [
       { label: "Dignatarios", href: "/dignatarios/" },
     ],
   },
+  { label: "Noticias", href: "/noticias/" },
   {
     label: "Transparencia",
     items: [
@@ -32,3 +33,7 @@ export const NAV: NavGroup[] = [
     ],
   },
 ];
+
+export const NAV_LINKS: NavItem[] = NAV.flatMap((entry) =>
+  "items" in entry ? entry.items : [entry],
+);

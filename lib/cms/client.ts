@@ -1,5 +1,5 @@
 export async function wp<T>(
-  path: "posts" | "pages",
+  path: "posts" | "pages" | "categories",
   params: Record<string, string | number>,
 ): Promise<{ data: T; totalPages: number } | null> {
   if (!process.env.WP_URL) throw new Error("WP_URL is not set");
@@ -12,6 +12,10 @@ export async function wp<T>(
     next: { revalidate: 300, tags: ["wordpress"] },
   });
   if (res.status === 404) return null;
+  if (res.status === 400) {
+    const body = (await res.json().catch(() => null)) as { code?: string } | null;
+    if (body?.code === "rest_post_invalid_page_number") return null;
+  }
   if (!res.ok) throw new Error(`WordPress ${res.status} ${url.pathname}`);
   return {
     data: (await res.json()) as T,

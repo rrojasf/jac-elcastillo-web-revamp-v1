@@ -1,19 +1,13 @@
 import type { ReactNode } from "react";
 import { Container } from "@/components/atoms/Container";
 import { Heading } from "@/components/atoms/Heading";
+import { Tiles } from "@/components/atoms/Tiles";
 
 type Size = "sm";
 
 const sizes: Record<Size, string> = {
   sm: "py-10 md:py-14",
 };
-
-const tiles = [
-  "bg-leaf",
-  "bg-sky",
-  "bg-white shadow-[inset_0_0_0_6px_var(--color-sun)]",
-  "bg-leaf",
-];
 
 type HeroProps = {
   title: string;
@@ -35,18 +29,10 @@ export function Hero({ title, eyebrow, size = "sm", children }: HeroProps) {
           {title}
         </Heading>
         {children && <div className="mt-3 text-lg text-muted">{children}</div>}
-        <div
-          aria-hidden="true"
-          className="absolute right-6 top-1/2 hidden -translate-y-1/2 rotate-6 grid-cols-2 gap-1.5 md:grid"
-        >
-          {tiles.map((tile, index) => (
-            <span
-              key={index}
-              style={{ animationDelay: `${index * 90}ms` }}
-              className={`size-11 rounded-sm border-[3px] border-brand motion-safe:animate-rise ${tile}`}
-            />
-          ))}
-        </div>
+        <Tiles
+          animated
+          className="absolute right-6 top-1/2 hidden -translate-y-1/2 rotate-6 md:grid"
+        />
       </Container>
     </section>
   );

@@ -12,3 +12,4 @@ export type Summary = {
 export type Entry = Summary & { kind: "post" | "page"; html: SafeHtml };
 export type NavItem = { label: string; href: string };
 export type NavGroup = { label: string; items: NavItem[] };
+export type NavEntry = NavItem | NavGroup;
